@@ -1,8 +1,11 @@
 package com.ashpex;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,14 +22,14 @@ public class Student {
     public Student() {
     }
 
-    public Student(String id, String name, String gender, String image, String address, String note, Float grade) {
+    public Student(String id, String name, String gender, String image, String address, Float grade, String note) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.image = image;
         this.address = address;
-        this.note = note;
         this.grade = grade;
+        this.note = note;
     }
 
     public Student(String id) {
@@ -34,7 +37,8 @@ public class Student {
     }
 
     public static ArrayList<Student> importStudent(String fileName) {
-        Scanner Input = new Scanner(System.in);
+/*        Scanner Input = new Scanner(System.in);
+        Input.nextLine();
         ArrayList<Student> list = new ArrayList<>();
         List<List<String>> records = new ArrayList<>();
         while(Input.hasNextLine()) {
@@ -44,8 +48,36 @@ public class Student {
             Student student = new Student(record.get(0), record.get(1), record.get(2), record.get(3), record.get(4), record.get(5), Float.parseFloat(record.get(6)));
             list.add(student);
         }
+        return list;*/
+
+/*        ArrayList<Student> list = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] fields = line.split(",");
+            Student student = new Student(fields[0], fields[1], fields[2], fields[3], fields[4], Float.parseFloat(fields[5]), fields[6]);
+            list.add(student);
+        }
+        return list;*/
+
+        ArrayList<Student> list = new ArrayList<>();
+        try{
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                String[] fields = line.split(",");
+                Student student = new Student(fields[0], fields[1], fields[2], fields[3], fields[4], Float.parseFloat(fields[5]), fields[6]);
+                list.add(student);
+                line = bufferedReader.readLine();
+            }
+        }catch (IOException e){
+            System.err.println("File not found");
+        }
         return list;
     }
+
+
 
     private static List<String> getRecordFromLine(String nextLine) {
         List<String> record = new ArrayList<>();

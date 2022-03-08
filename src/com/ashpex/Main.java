@@ -9,12 +9,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 	// write your code here
         ArrayList<Student> studentArrayList = new ArrayList<Student>();
+        System.out.println("Welcome to Student Management System");
+        try {
+            studentArrayList = Student.importStudent("student.dat");
+        }catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
 
-/*        try {
-            readDataFromBinaryFile(studentArrayList);
-        }catch (IOException e){
-            System.err.println("Error reading data from file");
-        }*/
         int choice;
         Scanner Input = new Scanner(System.in);
         do{
@@ -41,6 +42,7 @@ public class Main {
                             found = true;
                         }
                     }
+                    writeDataToBinaryFile(studentArrayList);
                     if(!found){
                         System.out.println("Student not found");
                     }
@@ -60,6 +62,7 @@ public class Main {
                     }
                     else {
                         System.out.println("Student deleted");
+                        writeDataToBinaryFile(studentArrayList);
                     }
                     break;
                 case 4:
@@ -75,6 +78,7 @@ public class Main {
                     String fileName = Input.nextLine();
                     studentArrayList = Student.importStudent(fileName);
                     System.out.println("Import success");
+                    writeDataToBinaryFile(studentArrayList);
                     break;
                 case 6:
                     System.out.println("Enter file name to export: ");
@@ -84,6 +88,7 @@ public class Main {
                     break;
                 case 7:
                     System.out.println("Exit");
+                    writeDataToBinaryFile(studentArrayList);
                     break;
                 default:
                     System.out.println("Invalid choice");
@@ -109,8 +114,8 @@ public class Main {
 
     }
 
-    public static void readDataFromBinaryFile(ArrayList<Student> studentArrayList) throws IOException {
-        studentArrayList = Student.importStudent("student.dat");
+    public static void readDataFromBinaryFile() throws IOException {
+        ArrayList<Student> studentArrayList = Student.importStudent("student.dat");
 
     }
 }
