@@ -137,13 +137,13 @@ public class Student {
     }
 
     public Boolean setGender(String gender) {
-        if (gender == "male" || gender == "female"){
-            System.err.println("Gender must be male or female");
-            return false;
-        }
-        else{
+        if (gender.equals("male") || gender.equals("female")){
             this.gender = gender;
             return true;
+        }
+        else{
+            System.err.println("Gender must be male or female");
+            return false;
         }
     }
 
@@ -175,13 +175,30 @@ public class Student {
         return grade;
     }
 
-    public boolean setGrade(Float grade) {
-        if(grade < 0 || grade > 10) {
-            System.err.println("Grade must be between 0 and 10");
+    public boolean setGrade(String grade) {
+        try{
+            Float.parseFloat(grade);
+            if(Float.parseFloat(grade) < 0 || Float.parseFloat(grade) > 10 || grade.equals("")){
+                System.err.println("Grade must be between 0 and 10");
+                return false;
+            }else{
+                this.grade = Float.parseFloat(grade);
+                return true;
+            }
+        }catch (NumberFormatException e){
+            System.err.println("Grade must be a number");
             return false;
-        }else{
-            this.grade = grade;
+        }
+    }
+
+    public boolean setID(String id) {
+        if(id.matches("[0-9]{8}") && !id.isEmpty()){
+            this.id = id;
             return true;
+        }
+        else {
+            System.err.println("ID must be 8 digits");
+            return false;
         }
     }
 
@@ -190,17 +207,17 @@ public class Student {
         System.out.println("Input information of student");
 
         System.out.println("ID: ");
-        this.id = Input.nextLine();
+        while (!setID(Input.nextLine())){
+            System.out.println("ID: ");
+        }
 
         System.out.println("Name: ");
         this.name = Input.nextLine();
 
 
         System.out.println("Gender (male/female): ");
-        while(true){
-            String temp = Input.nextLine();
-            boolean check = setGender(temp);
-            if(check) break;
+        while(!setGender(Input.nextLine())){
+            System.out.println("Gender(male/female): ");
         }
 
         System.out.println("Image: ");
@@ -210,10 +227,8 @@ public class Student {
         this.address = Input.nextLine();
 
         System.out.println("Grade: ");
-        while(true){
-            float temp = Float.parseFloat(Input.nextLine());
-            boolean check = setGrade(temp);
-            if(check) break;
+        while(!setGrade(Input.nextLine())){
+            System.out.println("Grade: ");
         }
 
         System.out.println("Note: ");
@@ -225,8 +240,11 @@ public class Student {
         System.out.println("Update information of student (press enter if there is no change" );
 
         System.out.println("ID: ");
-        String id = Input.nextLine();
-        if(id.length() > 0) this.id = id;
+        if(Input.nextLine().length() > 0) {
+            while (!setID(Input.nextLine())){
+                System.out.println("ID: ");
+            }
+        }
 
         System.out.println("Name: ");
         String name = Input.nextLine();
@@ -234,7 +252,11 @@ public class Student {
 
         System.out.println("Gender: ");
         String gender = Input.nextLine();
-        if(gender.length() > 0) this.gender = gender;
+        if(gender.length() > 0) {
+            while(!setGender(Input.nextLine())){
+                System.out.println("Gender(male/female): ");
+            }
+        }
 
         System.out.println("Image: ");
         String image = Input.nextLine();
@@ -245,8 +267,11 @@ public class Student {
         if(image.length() > 0) this.address = address;
 
         System.out.println("Grade: ");
-        Float grade = Float.parseFloat(Input.nextLine());
-        if(grade > 0) this.grade = grade;
+        if(Input.nextLine().length() > 0) {
+            while(!setGrade(Input.nextLine())){
+                System.out.println("Grade: ");
+            }
+        }
     }
 
     public void showInfo(){

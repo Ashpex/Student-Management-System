@@ -2,6 +2,8 @@ package com.ashpex;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
@@ -69,9 +71,70 @@ public class Main {
                     if(studentArrayList.size() == 0){
                         System.out.println("There are no students");
                     }
-                    for(Student std : studentArrayList){
-                        std.showInfo();
+                    else {
+                        System.out.println("=================================================");
+                        System.out.println("| 1. Increasing based on student ID \t\t\t|");
+                        System.out.println("| 2. Decreasing based on student ID \t\t\t|");
+                        System.out.println("| 3. Increasing based on student grade \t\t\t|");
+                        System.out.println("| 4. Decreasing based on student grade \t\t\t|");
+                        System.out.println("=================================================");
+                        System.out.println("Enter your choice: ");
+                        int sortChoice = Integer.parseInt(Input.nextLine());
+                        switch (sortChoice){
+                            case 1:
+                                studentArrayList.sort(new Comparator<Student>() {
+                                    @Override
+                                    public int compare(Student student, Student t1) {
+                                        return student.getId().compareTo(t1.getId());
+                                    }
+                                });
+                                for (Student std : studentArrayList){
+                                    std.showInfo();
+                                }
+                                break;
+                            case 2:
+                                studentArrayList.sort(new Comparator<Student>() {
+                                    @Override
+                                    public int compare(Student student, Student t1) {
+                                        return t1.getId().compareTo(student.getId());
+                                    }
+                                });
+                                Collections.reverseOrder();
+                                for (Student std : studentArrayList){
+                                    std.showInfo();
+                                }
+                                break;
+                            case 3:
+                                studentArrayList.sort(new Comparator<Student>() {
+                                    @Override
+                                    public int compare(Student student, Student t1) {
+                                        return student.getGrade().compareTo(t1.getGrade());
+                                    }
+                                });
+                                for (Student std : studentArrayList){
+                                    std.showInfo();
+                                }
+                                break;
+                            case 4:
+                                studentArrayList.sort(new Comparator<Student>() {
+                                    @Override
+                                    public int compare(Student student, Student t1) {
+                                        return t1.getGrade().compareTo(student.getGrade());
+                                    }
+                                });
+                                Collections.reverseOrder();
+                                for (Student std : studentArrayList){
+                                    std.showInfo();
+                                }
+                                break;
+                            default:
+                                System.out.println("Invalid choice");
+
+                        }
                     }
+/*                    for(Student std : studentArrayList){
+                        std.showInfo();
+                    }*/
                     break;
                 case 5:
                     System.out.println("Enter file name to import: ");
@@ -98,13 +161,14 @@ public class Main {
 
     static void showMenu(){
         System.out.println("==============================");
-        System.out.println("1. Add a student");
-        System.out.println("2. Update a student");
-        System.out.println("3. Delete a student");
-        System.out.println("4. Show all students");
-        System.out.println("5. Import students");
-        System.out.println("6. Export students");
-        System.out.println("7. Exit");
+        System.out.println("| 1. Add a student \t\t\t|");
+        System.out.println("| 2. Update a student \t\t|");
+        System.out.println("| 3. Delete a student \t\t|");
+        System.out.println("| 4. Show all students \t\t|");
+        System.out.println("| 5. Import students \t\t|");
+        System.out.println("| 6. Export students \t\t|");
+        System.out.println("| 7. Exit \t\t\t\t\t|");
+        System.out.println("==============================");
         System.out.println("Enter your choice: ");
     }
 
@@ -118,4 +182,5 @@ public class Main {
         ArrayList<Student> studentArrayList = Student.importStudent("student.dat");
 
     }
+
 }
