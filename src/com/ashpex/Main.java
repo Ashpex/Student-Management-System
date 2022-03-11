@@ -29,7 +29,7 @@ public class Main {
                     int n = Integer.parseInt(Input.nextLine());
                     for(int i = 0; i < n; i++){
                         Student std = new Student();
-                        std.inputInfo();
+                        std.inputInfo(studentArrayList);
                         studentArrayList.add(std);
                         writeDataToBinaryFile(studentArrayList);
                     }
@@ -40,7 +40,7 @@ public class Main {
                     boolean found = false;
                     for(int i = 0; i < studentArrayList.size(); i++){
                         if(studentArrayList.get(i).getId().equals(id)){
-                            studentArrayList.get(i).updateInfo();
+                            studentArrayList.get(i).updateInfo(studentArrayList);
                             found = true;
                         }
                     }

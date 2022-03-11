@@ -128,8 +128,15 @@ public class Student {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean setName(String name) {
+        if(name.length() > 0) {
+            this.name = name;
+            return true;
+        }
+        else {
+            System.err.println("Name is empty");
+            return false;
+        }
     }
 
     public String getGender() {
@@ -191,7 +198,13 @@ public class Student {
         }
     }
 
-    public boolean setID(String id) {
+    public boolean setID(String id, ArrayList<Student> studentArrayList){
+        for (Student student : studentArrayList) {
+            if(student.id.equals(id)){
+                System.err.println("ID already exists");
+                return false;
+            }
+        }
         if(id.matches("[0-9]{8}") && !id.isEmpty()){
             this.id = id;
             return true;
@@ -202,17 +215,19 @@ public class Student {
         }
     }
 
-    public void inputInfo() {
+    public void inputInfo(ArrayList<Student> studentArrayList) {
         Scanner Input = new Scanner(System.in);
         System.out.println("Input information of student");
 
         System.out.println("ID: ");
-        while (!setID(Input.nextLine())){
+        while (!setID(Input.nextLine(),studentArrayList)) {
             System.out.println("ID: ");
         }
 
         System.out.println("Name: ");
-        this.name = Input.nextLine();
+        while(!setName(Input.nextLine())){
+            System.out.println("Name: ");
+        }
 
 
         System.out.println("Gender (male/female): ");
@@ -235,13 +250,14 @@ public class Student {
         this.note = Input.nextLine();
     }
 
-    public void updateInfo() {
+    public void updateInfo(ArrayList<Student> studentArrayList) {
         Scanner Input = new Scanner(System.in);
         System.out.println("Update information of student (press enter if there is no change" );
 
         System.out.println("ID: ");
-        if(Input.nextLine().length() > 0) {
-            while (!setID(Input.nextLine())){
+        String id = Input.nextLine();
+        if(id.length() > 0 && !setID(id,studentArrayList)){
+            while (!setID(Input.nextLine(),studentArrayList)) {
                 System.out.println("ID: ");
             }
         }
