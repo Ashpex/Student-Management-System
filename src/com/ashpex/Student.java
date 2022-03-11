@@ -252,15 +252,20 @@ public class Student {
 
     public void updateInfo(ArrayList<Student> studentArrayList) {
         Scanner Input = new Scanner(System.in);
-        System.out.println("Update information of student (press enter if there is no change" );
+        System.out.println("Update information of student (press enter if there is no change)" );
 
         System.out.println("ID: ");
         String id = Input.nextLine();
-        if(id.length() > 0 && !setID(id,studentArrayList)){
+        if (id.length() > 0 && setID(id,studentArrayList)) {
+            this.id = id;
+        }
+        else if(id.length() > 0 && !setID(id,studentArrayList)){
+            System.out.println("ID: ");
             while (!setID(Input.nextLine(),studentArrayList)) {
                 System.out.println("ID: ");
             }
         }
+
 
         System.out.println("Name: ");
         String name = Input.nextLine();
@@ -268,9 +273,13 @@ public class Student {
 
         System.out.println("Gender: ");
         String gender = Input.nextLine();
-        if(gender.length() > 0) {
-            while(!setGender(Input.nextLine())){
-                System.out.println("Gender(male/female): ");
+        if (gender.length() > 0 && setGender(gender)) {
+            this.gender = gender;
+        }
+        else if(gender.length() > 0 && !setGender(gender)){
+            System.out.println("Gender: ");
+            while (!setGender(Input.nextLine())) {
+                System.out.println("Gender: ");
             }
         }
 
@@ -283,8 +292,13 @@ public class Student {
         if(image.length() > 0) this.address = address;
 
         System.out.println("Grade: ");
-        if(Input.nextLine().length() > 0) {
-            while(!setGrade(Input.nextLine())){
+        String grade = Input.nextLine();
+        if (grade.length() > 0 && setGrade(grade)) {
+            this.grade = Float.parseFloat(grade);
+        }
+        else if(gender.length() > 0 && !setGrade(grade)){
+            System.out.println("Grade: ");
+            while (!setGrade(Input.nextLine())) {
                 System.out.println("Grade: ");
             }
         }
