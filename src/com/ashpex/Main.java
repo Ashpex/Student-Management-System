@@ -13,7 +13,7 @@ public class Main {
         ArrayList<Student> studentArrayList = new ArrayList<Student>();
         System.out.println("Welcome to Student Management System");
         try {
-            studentArrayList = Student.importStudent("student.dat");
+            studentArrayList = Student.importStudent("student","dat");
         }catch (Exception e){
             System.out.println("Error: " + e.getMessage());
         }
@@ -137,16 +137,16 @@ public class Main {
                     }*/
                     break;
                 case 5:
-                    System.out.println("Enter file name to import: ");
-                    String fileName = Input.nextLine();
-                    studentArrayList = Student.importStudent(fileName);
+                    System.out.println("Enter file name to import(.csv): ");
+                    String fileName = Input.nextLine().toString().split("\\.")[0];
+                    studentArrayList = Student.importStudent(fileName,"csv");
                     System.out.println("Import success");
                     writeDataToBinaryFile(studentArrayList);
                     break;
                 case 6:
-                    System.out.println("Enter file name to export: ");
-                    fileName = Input.nextLine();
-                    Student.exportStudent(studentArrayList, fileName);
+                    System.out.println("Enter file name to export(.csv): ");
+                    fileName = Input.nextLine().toString().split("\\.")[0];
+                    Student.exportStudent(studentArrayList, fileName,"csv");
                     System.out.println("Export success");
                     break;
                 case 7:
@@ -174,12 +174,12 @@ public class Main {
 
 
     public static void writeDataToBinaryFile(ArrayList<Student> studentArrayList) throws IOException {
-        Student.exportStudent(studentArrayList, "student.dat");
+        Student.exportStudent(studentArrayList, "student","dat");
 
     }
 
     public static void readDataFromBinaryFile() throws IOException {
-        ArrayList<Student> studentArrayList = Student.importStudent("student.dat");
+        ArrayList<Student> studentArrayList = Student.importStudent("student","dat");
 
     }
 

@@ -36,7 +36,7 @@ public class Student {
         this.id = id;
     }
 
-    public static ArrayList<Student> importStudent(String fileName) {
+    public static ArrayList<Student> importStudent(String fileName, String extension) throws IOException {
 /*        Scanner Input = new Scanner(System.in);
         Input.nextLine();
         ArrayList<Student> list = new ArrayList<>();
@@ -61,16 +61,25 @@ public class Student {
         }
         return list;*/
 
+        fileName = fileName + "." + extension;
+        String header = "id,name,gender,image,address,grade,note";
         ArrayList<Student> list = new ArrayList<>();
         try{
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             String line = bufferedReader.readLine();
-            while (line != null) {
+            if(line.equals(header)) {
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] fields = line.split(",");
+                    Student student = new Student(fields[0], fields[1], fields[2], fields[3], fields[4], Float.parseFloat(fields[5]), fields[6]);
+                    list.add(student);
+                }
+            }
+/*            while (line != null) {
                 String[] fields = line.split(",");
                 Student student = new Student(fields[0], fields[1], fields[2], fields[3], fields[4], Float.parseFloat(fields[5]), fields[6]);
                 list.add(student);
                 line = bufferedReader.readLine();
-            }
+            }*/
         }catch (IOException e){
             System.err.println("File not found");
         }
@@ -88,14 +97,14 @@ public class Student {
         return record;
     }
 
-    public static void exportStudent(ArrayList<Student> studentArrayList, String fileName) throws IOException {
+    public static void exportStudent(ArrayList<Student> studentArrayList, String fileName, String extension) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
-        //fileName = fileName + ".csv";
+        fileName = fileName + "." + extension;
         FileWriter fileWriter = new FileWriter(fileName);
 
-/*        String title = stringBuilder.append("id,name,gender,image,address,grade,note\n").toString();
-        fileWriter.write(title);
-        stringBuilder.setLength(0);*/
+        String header = stringBuilder.append("id,name,gender,image,address,grade,note\n").toString();
+        fileWriter.write(header);
+        stringBuilder.setLength(0);
 
         for (Student student : studentArrayList) {
             stringBuilder.append(student.id + ",");
