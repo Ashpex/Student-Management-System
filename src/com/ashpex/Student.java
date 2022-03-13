@@ -1,16 +1,14 @@
 package com.ashpex;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Student {
+public class Student implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L;
     String id;
     String name;
     String gender;
@@ -23,6 +21,7 @@ public class Student {
     }
 
     public Student(String id, String name, String gender, String image, String address, Float grade, String note) {
+        super();
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -36,30 +35,11 @@ public class Student {
         this.id = id;
     }
 
-    public static ArrayList<Student> importStudent(String fileName, String extension) throws IOException {
-/*        Scanner Input = new Scanner(System.in);
-        Input.nextLine();
-        ArrayList<Student> list = new ArrayList<>();
-        List<List<String>> records = new ArrayList<>();
-        while(Input.hasNextLine()) {
-            records.add(getRecordFromLine(Input.nextLine()));
-        }
-        for (List<String> record : records) {
-            Student student = new Student(record.get(0), record.get(1), record.get(2), record.get(3), record.get(4), record.get(5), Float.parseFloat(record.get(6)));
-            list.add(student);
-        }
-        return list;*/
+    public String toString() {
+        return "Student [id=" + id + ", name=" + name + ", gender=" + gender + ", image=" + image + ", address=" +address + ", grade=" + grade + ", note=" + note;
+    }
 
-/*        ArrayList<Student> list = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            String[] fields = line.split(",");
-            Student student = new Student(fields[0], fields[1], fields[2], fields[3], fields[4], Float.parseFloat(fields[5]), fields[6]);
-            list.add(student);
-        }
-        return list;*/
+    public static ArrayList<Student> importStudent(String fileName, String extension) throws IOException {
 
         fileName = fileName + "." + extension;
         String header = "id,name,gender,image,address,grade,note";
@@ -74,12 +54,6 @@ public class Student {
                     list.add(student);
                 }
             }
-/*            while (line != null) {
-                String[] fields = line.split(",");
-                Student student = new Student(fields[0], fields[1], fields[2], fields[3], fields[4], Float.parseFloat(fields[5]), fields[6]);
-                list.add(student);
-                line = bufferedReader.readLine();
-            }*/
         }catch (IOException e){
             System.err.println("File not found");
         }
@@ -322,4 +296,28 @@ public class Student {
         System.out.println("Grade: " + this.grade);
         System.out.println("Note: " + this.note);
     }
+
+/*    public void writeDataToBinaryFile(ArrayList<Student> studentArrayList) {
+            try {
+            FileOutputStream fos = new FileOutputStream("student.dat");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(studentArrayList);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void readDataFromBinaryFile(ArrayList<Student> studentArrayList) {
+        try {
+            FileInputStream fis = new FileInputStream("student.dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            studentArrayList = (ArrayList<Student>) ois.readObject();
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }*/
 }

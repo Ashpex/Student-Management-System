@@ -1,21 +1,33 @@
 package com.ashpex;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-	// write your code here
+
+        File file = new File("student.dat");
+        if(!file.exists())
+            try {
+                if(file.createNewFile())
+                    System.out.println("student.dat file has been created");
+                else {
+                    System.out.println("Can not create student.dat file");
+                }
+            } catch (IOException e) {
+                System.out.println("There's something wrong");
+            }
+
         ArrayList<Student> studentArrayList = new ArrayList<Student>();
         System.out.println("Welcome to Student Management System");
+        System.out.println("==============================");
+        System.out.println("Reading existing data...");
         try {
-            studentArrayList = Student.importStudent("student","dat");
+            studentArrayList = readDataFromBinaryFile(file);
         }catch (Exception e){
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage() + "\n" + "No existing data found. Creating new data...");
+            System.out.println("==============================");
         }
 
         int choice;
@@ -31,7 +43,7 @@ public class Main {
                         Student std = new Student();
                         std.inputInfo(studentArrayList);
                         studentArrayList.add(std);
-                        writeDataToBinaryFile(studentArrayList);
+                        writeDataToBinaryFile(file,studentArrayList);
                     }
                     break;
                 case 2:
@@ -44,7 +56,7 @@ public class Main {
                             found = true;
                         }
                     }
-                    writeDataToBinaryFile(studentArrayList);
+                    writeDataToBinaryFile(file,studentArrayList);
                     if(!found){
                         System.out.println("Student not found");
                     }
@@ -64,7 +76,7 @@ public class Main {
                     }
                     else {
                         System.out.println("Student deleted");
-                        writeDataToBinaryFile(studentArrayList);
+                        writeDataToBinaryFile(file,studentArrayList);
                     }
                     break;
                 case 4:
@@ -141,7 +153,7 @@ public class Main {
                     String fileName = Input.nextLine().toString().split("\\.")[0];
                     studentArrayList = Student.importStudent(fileName,"csv");
                     System.out.println("Import success");
-                    writeDataToBinaryFile(studentArrayList);
+                    writeDataToBinaryFile(file,studentArrayList);
                     break;
                 case 6:
                     System.out.println("Enter file name to export(.csv): ");
@@ -151,7 +163,7 @@ public class Main {
                     break;
                 case 7:
                     System.out.println("Exit");
-                    writeDataToBinaryFile(studentArrayList);
+                    writeDataToBinaryFile(file,studentArrayList);
                     break;
                 default:
                     System.out.println("Invalid choice");
@@ -173,14 +185,39 @@ public class Main {
     }
 
 
-    public static void writeDataToBinaryFile(ArrayList<Student> studentArrayList) throws IOException {
-        Student.exportStudent(studentArrayList, "student","dat");
-
+    static ArrayList<Student> readDataFromBinaryFile(File file){
+        ArrayList<Student> studentArrayList = new ArrayList<>();
+        Object obj;
+        try {
+            if(file.exists()) {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                ObjectInputStream objectInputStream = new  ObjectInputStream(fileInputStream);
+                while((obj = objectInputStream.readObject()) != null) {
+                    studentArrayList.add((Student)obj);
+                }
+                objectInputStream.close();
+            }
+        } catch (ClassNotFoundException ex) {
+        } catch (EOFException e){return studentArrayList;} catch (IOException e) {
+            System.out.println("Error");
+        }
+        return studentArrayList;
     }
+    static void writeDataToBinaryFile(File file, ArrayList<Student> list) {
+        try {
+            if(file.exists()) {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-    public static void readDataFromBinaryFile() throws IOException {
-        ArrayList<Student> studentArrayList = Student.importStudent("student","dat");
-
+                for(Student i :list) {
+                    objectOutputStream.writeObject(i);
+                }
+                System.out.println("Write success");
+                objectOutputStream.close();
+            }
+        } catch (IOException  e) {
+            System.out.println("Error");
+        } finally {
+        }
     }
-
 }
